@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { getLaporanBulanan, getTransaksi } from '../services/api'
 import Navbar from '../components/Navbar'
 
@@ -10,11 +10,7 @@ export default function Laporan() {
     const [transaksi, setTransaksi] = useState([])
     const [loading, setLoading] = useState(false)
 
-    useEffect(() => {
-        ambilData()
-    }, [bulan])
-
-    const ambilData = async () => {
+    const ambilData = useCallback(async () => {
         setLoading(true)
         try {
             const [laporanRes, transaksiRes] = await Promise.all([
@@ -22,7 +18,6 @@ export default function Laporan() {
                 getTransaksi()
             ])
             setLaporan(laporanRes.data)
-            // Filter transaksi sesuai bulan yang dipilih
             const filtered = transaksiRes.data.filter(t =>
                 t.tanggal.slice(0, 7) === bulan
             )
@@ -32,7 +27,11 @@ export default function Laporan() {
         } finally {
             setLoading(false)
         }
-    }
+    }, [bulan])
+
+    useEffect(() => {
+        ambilData()
+    }, [ambilData])
 
     const formatRupiah = (angka) => {
         return new Intl.NumberFormat('id-ID', {
@@ -81,8 +80,8 @@ export default function Laporan() {
                             <div className="bg-white rounded-lg shadow p-6">
                                 <p className="text-gray-500 text-sm">Selisih Bulan Ini</p>
                                 <p className={`text-2xl font-bold ${(laporan?.total_pemasukan - laporan?.total_pengeluaran) >= 0
-                                        ? 'text-blue-600'
-                                        : 'text-red-600'
+                                    ? 'text-blue-600'
+                                    : 'text-red-600'
                                     }`}>
                                     {formatRupiah(
                                         (laporan?.total_pemasukan || 0) -
@@ -119,15 +118,15 @@ export default function Laporan() {
                                             <td className="px-6 py-4 text-sm text-gray-700">{t.deskripsi}</td>
                                             <td className="px-6 py-4 text-sm">
                                                 <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.tipe_transaction === 'pemasukan'
-                                                        ? 'bg-green-100 text-green-700'
-                                                        : 'bg-red-100 text-red-700'
+                                                    ? 'bg-green-100 text-green-700'
+                                                    : 'bg-red-100 text-red-700'
                                                     }`}>
                                                     {t.tipe_transaction}
                                                 </span>
                                             </td>
                                             <td className={`px-6 py-4 text-sm font-medium ${t.tipe_transaction === 'pemasukan'
-                                                    ? 'text-green-600'
-                                                    : 'text-red-600'
+                                                ? 'text-green-600'
+                                                : 'text-red-600'
                                                 }`}>
                                                 {t.tipe_transaction === 'pengeluaran' ? '-' : '+'}
                                                 {formatRupiah(t.jumlah)}
