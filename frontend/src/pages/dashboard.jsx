@@ -7,8 +7,6 @@ export default function Dashboard() {
     const [transaksi, setTransaksi] = useState([])
     const [loading, setLoading] = useState(true)
 
-    const user = JSON.parse(localStorage.getItem('user'))
-
     useEffect(() => {
         ambilData()
     }, [])
@@ -26,12 +24,6 @@ export default function Dashboard() {
         } finally {
             setLoading(false)
         }
-    }
-
-    const handleLogout = () => {
-        localStorage.removeItem('token')
-        localStorage.removeItem('user')
-        window.location.href = '/login'
     }
 
     const formatRupiah = (angka) => {
