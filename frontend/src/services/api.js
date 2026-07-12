@@ -15,6 +15,7 @@ API.interceptors.request.use((config) => {
 })
 
 export const login = (data) => API.post('/auth/login', data)
+export const register = (data) => API.post('/auth/register', data)
 export const getTransaksi = () => API.get('/transaksi')
 export const tambahTransaksi = (data) => API.post('/transaksi', data)
 export const editTransaksi = (id, data) => API.put(`/transaksi/${id}`, data)

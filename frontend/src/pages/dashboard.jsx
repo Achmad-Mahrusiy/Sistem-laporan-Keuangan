@@ -34,84 +34,83 @@ export default function Dashboard() {
     }
 
     if (loading) return (
-        <div className="min-h-screen flex items-center justify-center">
-            <p className="text-gray-500">Loading...</p>
+        <div className="min-h-screen bg-paper flex items-center justify-center">
+            <p className="text-ink/40 text-sm">Memuat...</p>
         </div>
     )
 
     return (
-        <div className="min-h-screen bg-gray-100">
-            {/* Navbar */}
+        <div className="min-h-screen bg-paper">
             <Navbar active="dashboard" />
 
-            <div className="p-6">
+            <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+                <p className="text-xs tracking-[0.2em] uppercase text-forest font-semibold mb-1">Ringkasan</p>
+                <h2 className="font-display text-2xl sm:text-3xl font-semibold text-ink mb-6">Dashboard</h2>
+
                 {/* Kartu ringkasan */}
-                <div className="grid grid-cols-3 gap-6 mb-6">
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <p className="text-gray-500 text-sm">Total Pemasukan</p>
-                        <p className="text-2xl font-bold text-green-600">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-8">
+                    <div className="bg-white rounded-sm border border-rule px-6 py-5">
+                        <p className="text-ink/50 text-xs uppercase tracking-wide mb-2">Total Pemasukan</p>
+                        <p className="font-mono tabular-nums text-2xl font-semibold text-forest">
                             {formatRupiah(ringkasan?.total_pemasukan || 0)}
                         </p>
+                        <div className="h-0.5 w-8 bg-forest mt-3" />
                     </div>
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <p className="text-gray-500 text-sm">Total Pengeluaran</p>
-                        <p className="text-2xl font-bold text-red-600">
+                    <div className="bg-white rounded-sm border border-rule px-6 py-5">
+                        <p className="text-ink/50 text-xs uppercase tracking-wide mb-2">Total Pengeluaran</p>
+                        <p className="font-mono tabular-nums text-2xl font-semibold text-clay">
                             {formatRupiah(ringkasan?.total_pengeluaran || 0)}
                         </p>
+                        <div className="h-0.5 w-8 bg-clay mt-3" />
                     </div>
-                    <div className="bg-white rounded-lg shadow p-6">
-                        <p className="text-gray-500 text-sm">Saldo</p>
-                        <p className="text-2xl font-bold text-blue-600">
+                    <div className="bg-ink rounded-sm px-6 py-5">
+                        <p className="text-white/50 text-xs uppercase tracking-wide mb-2">Saldo</p>
+                        <p className="font-mono tabular-nums text-2xl font-semibold text-white">
                             {formatRupiah(ringkasan?.saldo || 0)}
                         </p>
+                        <div className="h-0.5 w-8 bg-white/40 mt-3" />
                     </div>
                 </div>
 
                 {/* Tabel transaksi */}
-                <div className="bg-white rounded-lg shadow">
-                    <div className="px-6 py-4 border-b">
-                        <h2 className="text-lg font-semibold">Riwayat Transaksi</h2>
+                <div className="bg-white rounded-sm border border-rule">
+                    <div className="px-4 sm:px-6 py-4 border-b border-rule">
+                        <h3 className="font-display text-lg font-semibold text-ink">Riwayat Transaksi</h3>
                     </div>
-                    <table className="w-full">
-                        <thead className="bg-gray-50">
-                            <tr>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tanggal</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Kategori</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Deskripsi</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Tipe</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Jumlah</th>
-                            </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200">
-                            {transaksi.map((t) => (
-                                <tr key={t.id_transaction}>
-                                    <td className="px-6 py-4 text-sm text-gray-700">
-                                        {new Date(t.tanggal).toLocaleDateString('id-ID')}
-                                    </td>
-                                    <td className="px-6 py-4 text-sm text-gray-700">{t.nama_kategori}</td>
-                                    <td className="px-6 py-4 text-sm text-gray-700">{t.deskripsi}</td>
-                                    <td className="px-6 py-4 text-sm">
-                                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.tipe_transaction === 'pemasukan'
-                                            ? 'bg-green-100 text-green-700'
-                                            : 'bg-red-100 text-red-700'
-                                            }`}>
-                                            {t.tipe_transaction}
-                                        </span>
-                                    </td>
-                                    <td className={`px-6 py-4 text-sm font-medium ${t.tipe_transaction === 'pemasukan'
-                                        ? 'text-green-600'
-                                        : 'text-red-600'
-                                        }`}>
-                                        {t.tipe_transaction === 'pengeluaran' ? '-' : '+'}
-                                        {formatRupiah(t.jumlah)}
-                                    </td>
+                    <div className="overflow-x-auto">
+                        <table className="w-full min-w-[640px]">
+                            <thead>
+                                <tr className="border-b border-rule">
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Tanggal</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Kategori</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Deskripsi</th>
+                                    <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Jumlah</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {transaksi.map((t) => (
+                                    <tr key={t.id_transaction} className="border-b border-rule last:border-0">
+                                        <td className="px-6 py-3.5 text-sm text-ink/70">
+                                            {new Date(t.tanggal).toLocaleDateString('id-ID')}
+                                        </td>
+                                        <td className="px-6 py-3.5 text-sm text-ink/70">{t.nama_kategori}</td>
+                                        <td className={`px-6 py-3.5 text-sm text-ink border-l-2 ${t.tipe_transaction === 'pemasukan' ? 'border-forest' : 'border-clay'
+                                            }`}>
+                                            {t.deskripsi}
+                                        </td>
+                                        <td className={`px-6 py-3.5 text-sm font-mono tabular-nums text-right font-medium ${t.tipe_transaction === 'pemasukan' ? 'text-forest' : 'text-clay'
+                                            }`}>
+                                            {t.tipe_transaction === 'pengeluaran' ? '-' : '+'}
+                                            {formatRupiah(t.jumlah)}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
 
                     {transaksi.length === 0 && (
-                        <p className="text-center text-gray-500 py-8">Belum ada transaksi</p>
+                        <p className="text-center text-ink/40 text-sm py-10">Belum ada transaksi</p>
                     )}
                 </div>
             </div>
