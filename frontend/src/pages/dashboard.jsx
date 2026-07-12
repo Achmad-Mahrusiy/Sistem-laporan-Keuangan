@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { getDashboard, getTransaksi } from '../services/api'
+import Navbar from '../components/Navbar'
 
 export default function Dashboard() {
     const [ringkasan, setRingkasan] = useState(null)
@@ -49,18 +50,7 @@ export default function Dashboard() {
     return (
         <div className="min-h-screen bg-gray-100">
             {/* Navbar */}
-            <nav className="bg-blue-600 text-white px-6 py-4 flex justify-between items-center">
-                <h1 className="text-xl font-bold">Sistem Laporan Keuangan</h1>
-                <div className="flex items-center gap-4">
-                    <span>Halo, {user?.username}</span>
-                    <button
-                        onClick={handleLogout}
-                        className="bg-white text-blue-600 px-4 py-1 rounded hover:bg-gray-100 font-medium"
-                    >
-                        Logout
-                    </button>
-                </div>
-            </nav>
+            <Navbar active="dashboard" />
 
             <div className="p-6">
                 {/* Kartu ringkasan */}
@@ -110,15 +100,15 @@ export default function Dashboard() {
                                     <td className="px-6 py-4 text-sm text-gray-700">{t.deskripsi}</td>
                                     <td className="px-6 py-4 text-sm">
                                         <span className={`px-2 py-1 rounded-full text-xs font-medium ${t.tipe_transaction === 'pemasukan'
-                                                ? 'bg-green-100 text-green-700'
-                                                : 'bg-red-100 text-red-700'
+                                            ? 'bg-green-100 text-green-700'
+                                            : 'bg-red-100 text-red-700'
                                             }`}>
                                             {t.tipe_transaction}
                                         </span>
                                     </td>
                                     <td className={`px-6 py-4 text-sm font-medium ${t.tipe_transaction === 'pemasukan'
-                                            ? 'text-green-600'
-                                            : 'text-red-600'
+                                        ? 'text-green-600'
+                                        : 'text-red-600'
                                         }`}>
                                         {t.tipe_transaction === 'pengeluaran' ? '-' : '+'}
                                         {formatRupiah(t.jumlah)}
