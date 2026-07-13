@@ -82,7 +82,7 @@ export default function Register() {
 
                         <div className="mb-5">
                             <label className="block text-ink text-sm font-medium mb-1.5">
-                                Email <span className="text-ink/40 font-normal">(opsional)</span>
+                                Email
                             </label>
                             <input
                                 type="email"
