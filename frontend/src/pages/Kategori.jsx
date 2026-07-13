@@ -12,7 +12,7 @@ export default function Kategori() {
         tipe_category: 'pemasukan'
     })
 
-    const currentUser = JSON.parse(localStorage.getItem('user'))
+    // const currentUser = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {
         ambilData()
