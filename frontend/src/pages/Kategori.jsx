@@ -12,6 +12,8 @@ export default function Kategori() {
         tipe_category: 'pemasukan'
     })
 
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+
     useEffect(() => {
         ambilData()
     }, [])
@@ -154,6 +156,7 @@ export default function Kategori() {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">No</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Nama</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Tipe</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Sumber</th>
                                 <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Aksi</th>
                             </tr>
                         </thead>
@@ -171,19 +174,32 @@ export default function Kategori() {
                                             {k.tipe_category}
                                         </span>
                                     </td>
+                                    <td className="px-6 py-3.5 text-sm">
+                                        {k.id_user === null ? (
+                                            <span className="text-xs text-ink/35 italic">Bawaan</span>
+                                        ) : (
+                                            <span className="text-xs text-forest">Milik saya</span>
+                                        )}
+                                    </td>
                                     <td className="px-6 py-3.5 text-sm text-right whitespace-nowrap">
-                                        <button
-                                            onClick={() => handleEdit(k)}
-                                            className="text-ink/60 hover:text-forest mr-3 transition-colors"
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => handleHapus(k.id_category)}
-                                            className="text-ink/60 hover:text-clay transition-colors"
-                                        >
-                                            Hapus
-                                        </button>
+                                        {k.id_user !== null ? (
+                                            <>
+                                                <button
+                                                    onClick={() => handleEdit(k)}
+                                                    className="text-ink/60 hover:text-forest mr-3 transition-colors"
+                                                >
+                                                    Edit
+                                                </button>
+                                                <button
+                                                    onClick={() => handleHapus(k.id_category)}
+                                                    className="text-ink/60 hover:text-clay transition-colors"
+                                                >
+                                                    Hapus
+                                                </button>
+                                            </>
+                                        ) : (
+                                            <span className="text-xs text-ink/25">—</span>
+                                        )}
                                     </td>
                                 </tr>
                             ))}

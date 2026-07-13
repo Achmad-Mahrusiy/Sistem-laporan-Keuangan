@@ -1,11 +1,19 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { login } from '../services/api'
 
 export default function Login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
+    const [info, setInfo] = useState('')
     const [loading, setLoading] = useState(false)
+
+    useEffect(() => {
+        const params = new URLSearchParams(window.location.search)
+        if (params.get('expired') === '1') {
+            setInfo('Sesi kamu berakhir karena tidak ada aktivitas. Silakan login kembali.')
+        }
+    }, [])
 
     const handleLogin = async (e) => {
         e.preventDefault()
@@ -46,6 +54,12 @@ export default function Login() {
                     <p className="text-center text-ink/50 text-sm mb-8">
                         Masuk untuk mencatat pemasukan &amp; pengeluaran
                     </p>
+
+                    {info && (
+                        <div className="bg-forest-light border-l-4 border-forest text-forest-dark px-4 py-3 rounded-sm mb-5 text-sm">
+                            {info}
+                        </div>
+                    )}
 
                     {error && (
                         <div className="bg-clay-light border-l-4 border-clay text-clay px-4 py-3 rounded-sm mb-5 text-sm">

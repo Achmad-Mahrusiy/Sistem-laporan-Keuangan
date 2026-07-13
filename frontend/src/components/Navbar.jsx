@@ -10,11 +10,14 @@ export default function Navbar({ active }) {
         window.location.href = '/login'
     }
 
+    const isAdmin = user?.role === 'admin'
+
     const links = [
         { href: '/dashboard', label: 'Dashboard', key: 'dashboard' },
         { href: '/transaksi', label: 'Transaksi', key: 'transaksi' },
         { href: '/kategori', label: 'Kategori', key: 'kategori' },
         { href: '/laporan', label: 'Laporan', key: 'laporan' },
+        ...(isAdmin ? [{ href: '/users', label: 'Kelola User', key: 'users' }] : []),
     ]
 
     return (

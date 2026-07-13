@@ -4,8 +4,6 @@ const API = axios.create({
     baseURL: process.env.REACT_APP_API_URL
 })
 
-console.log('API URL:', process.env.REACT_APP_API_URL)
-
 API.interceptors.request.use((config) => {
     const token = localStorage.getItem('token')
     if (token) {
@@ -27,3 +25,6 @@ export const hapusKategori = (id) => API.delete(`/kategori/${id}`)
 export const getDashboard = () => API.get('/laporan/dashboard')
 export const getLaporanBulanan = (bulan) => API.get(`/laporan/bulanan/${bulan}`)
 export const getSaldo = () => API.get('/laporan/saldo')
+export const getUsers = () => API.get('/users')
+export const editRoleUser = (id, data) => API.put(`/users/${id}/role`, data)
+export const hapusUser = (id) => API.delete(`/users/${id}`)

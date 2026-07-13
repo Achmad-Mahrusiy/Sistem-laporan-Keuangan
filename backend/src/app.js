@@ -18,6 +18,7 @@ app.use('/api/auth', require('./routes/auth'))
 app.use('/api/transaksi', require('./routes/transaksi'))
 app.use('/api/kategori', require('./routes/kategori'))
 app.use('/api/laporan', require('./routes/laporan'))
+app.use('/api/users', require('./routes/users'))
 
 // Test
 app.get('/', (req, res) => {
@@ -31,6 +32,3 @@ app.listen(PORT, () => {
 })
 
 module.exports = app
-
-
-

@@ -5,6 +5,8 @@ import Dashboard from './pages/dashboard'
 import Transaksi from './pages/Transaksi'
 import Kategori from './pages/Kategori'
 import Laporan from './pages/Laporan'
+import AdminUsers from './pages/AdminUsers'
+import useAutoLogout from './hooks/useAutoLogout'
 
 
 const isAuthenticated = () => {
@@ -16,6 +18,8 @@ const PrivateRoute = ({ children }) => {
 }
 
 function App() {
+  useAutoLogout()
+
   return (
     <BrowserRouter>
       <Routes>
@@ -40,6 +44,11 @@ function App() {
         <Route path="/laporan" element={
           <PrivateRoute>
             <Laporan />
+          </PrivateRoute>
+        } />
+        <Route path="/users" element={
+          <PrivateRoute>
+            <AdminUsers />
           </PrivateRoute>
         } />
       </Routes>
