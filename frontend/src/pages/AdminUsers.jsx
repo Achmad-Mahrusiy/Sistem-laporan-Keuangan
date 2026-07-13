@@ -66,6 +66,7 @@ export default function AdminUsers() {
                                 <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Username</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Email</th>
                                 <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Role</th>
+                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Status</th>
                                 <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Aksi</th>
                             </tr>
                         </thead>
@@ -82,6 +83,17 @@ export default function AdminUsers() {
                                         }`}>
                                             {u.role}
                                         </span>
+                                    </td>
+                                    <td className="px-6 py-3.5 text-sm">
+                                        {u.hari_tidak_aktif === null ? (
+                                            <span className="text-xs text-clay">Belum pernah login</span>
+                                        ) : u.is_aktif ? (
+                                            <span className="text-xs text-forest">Aktif</span>
+                                        ) : (
+                                            <span className="text-xs text-clay">
+                                                Tidak aktif {u.hari_tidak_aktif} hari
+                                            </span>
+                                        )}
                                     </td>
                                     <td className="px-6 py-3.5 text-sm text-right whitespace-nowrap">
                                         {u.id_user !== currentUser?.id ? (

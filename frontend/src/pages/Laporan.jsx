@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import { getLaporanBulanan, getTransaksi } from '../services/api'
 import Navbar from '../components/Navbar'
+import TrendChart from '../components/TrendChart'
 
 export default function Laporan() {
     const [bulan, setBulan] = useState(
@@ -8,20 +9,45 @@ export default function Laporan() {
     )
     const [laporan, setLaporan] = useState(null)
     const [transaksi, setTransaksi] = useState([])
+    const [trend, setTrend] = useState([])
     const [loading, setLoading] = useState(false)
+
+    // Hasilkan 6 bulan berurutan, berakhir di bulan yang sedang dipilih
+    const generateRentangBulan = (bulanAkhir, jumlah = 6) => {
+        const hasil = []
+        const [tahun, bulanAngka] = bulanAkhir.split('-').map(Number)
+        for (let i = jumlah - 1; i >= 0; i--) {
+            const tanggal = new Date(tahun, bulanAngka - 1 - i, 1)
+            const ym = `${tanggal.getFullYear()}-${String(tanggal.getMonth() + 1).padStart(2, '0')}`
+            hasil.push(ym)
+        }
+        return hasil
+    }
 
     const ambilData = useCallback(async () => {
         setLoading(true)
         try {
-            const [laporanRes, transaksiRes] = await Promise.all([
+            const rentangBulan = generateRentangBulan(bulan, 6)
+
+            const [laporanRes, transaksiRes, ...trendRes] = await Promise.all([
                 getLaporanBulanan(bulan),
-                getTransaksi()
+                getTransaksi(),
+                ...rentangBulan.map((b) => getLaporanBulanan(b))
             ])
+
             setLaporan(laporanRes.data)
+
             const filtered = transaksiRes.data.filter(t =>
                 t.tanggal.slice(0, 7) === bulan
             )
             setTransaksi(filtered)
+
+            const dataTrend = rentangBulan.map((b, i) => ({
+                bulan: b,
+                pemasukan: Number(trendRes[i].data.total_pemasukan) || 0,
+                pengeluaran: Number(trendRes[i].data.total_pengeluaran) || 0,
+            }))
+            setTrend(dataTrend)
         } catch (err) {
             console.error(err)
         } finally {
@@ -63,6 +89,9 @@ export default function Laporan() {
                     <p className="text-center text-gray-500">Loading...</p>
                 ) : (
                     <>
+                        {/* Grafik tren 6 bulan */}
+                        <TrendChart data={trend} />
+
                         {/* Kartu ringkasan bulanan */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
                             <div className="bg-white rounded-lg shadow p-6">

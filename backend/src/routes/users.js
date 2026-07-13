@@ -7,11 +7,11 @@ const adminOnly = require('../middleware/adminOnly')
 router.use(authMiddleware)
 router.use(adminOnly)
 
-// GET — semua user
+// GET — semua user beserta status aktivitasnya
 router.get('/', async (req, res) => {
     try {
         const result = await pool.query(
-            'SELECT id_user, username, email, role, created_at FROM users ORDER BY id_user'
+            'SELECT * FROM v_user_activity ORDER BY hari_tidak_aktif DESC NULLS FIRST'
         )
         res.json(result.rows)
     } catch (err) {

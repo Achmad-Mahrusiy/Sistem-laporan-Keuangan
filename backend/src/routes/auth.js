@@ -23,6 +23,12 @@ router.post('/login', async (req, res) => {
             return res.status(401).json({ message: 'Password salah' })
         }
 
+        // Catat waktu login ini sebagai aktivitas terakhir
+        await pool.query(
+            'UPDATE users SET last_login = NOW() WHERE id_user = $1',
+            [user.out_id_user]
+        )
+
         const token = jwt.sign(
             { id: user.out_id_user, username: user.out_username, role: user.out_role },
             process.env.JWT_SECRET,
@@ -67,7 +73,7 @@ router.post('/register', async (req, res) => {
         const passwordHash = await bcrypt.hash(password, 10)
 
         const result = await pool.query(
-            'INSERT INTO users (username, email, password_hash) VALUES ($1, $2, $3) RETURNING id_user, username, email',
+            'INSERT INTO users (username, email, password_hash, last_login) VALUES ($1, $2, $3, NOW()) RETURNING id_user, username, email',
             [username, email || null, passwordHash]
         )
         const user = result.rows[0]

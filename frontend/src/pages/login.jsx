@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { login } from '../services/api'
+import PasswordInput from '../components/PasswordInput'
 
 export default function Login() {
     const [username, setUsername] = useState('')
@@ -86,8 +87,7 @@ export default function Login() {
                             <label className="block text-ink text-sm font-medium mb-1.5">
                                 Password
                             </label>
-                            <input
-                                type="password"
+                            <PasswordInput
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className="w-full border border-rule rounded-sm px-3 py-2.5 bg-paper/40 focus:outline-none focus:ring-2 focus:ring-forest/30 focus:border-forest transition-colors"

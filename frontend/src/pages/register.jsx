@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { register } from '../services/api'
+import PasswordInput from '../components/PasswordInput'
 
 export default function Register() {
     const [username, setUsername] = useState('')
@@ -97,8 +98,7 @@ export default function Register() {
                             <label className="block text-ink text-sm font-medium mb-1.5">
                                 Password
                             </label>
-                            <input
-                                type="password"
+                            <PasswordInput
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 className={inputClass}
@@ -111,8 +111,7 @@ export default function Register() {
                             <label className="block text-ink text-sm font-medium mb-1.5">
                                 Konfirmasi Password
                             </label>
-                            <input
-                                type="password"
+                            <PasswordInput
                                 value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 className={inputClass}
