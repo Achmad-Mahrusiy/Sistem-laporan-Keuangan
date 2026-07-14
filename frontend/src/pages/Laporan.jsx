@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { getLaporanBulanan, getTransaksi } from '../services/api'
 import Navbar from '../components/Navbar'
 import TrendChart from '../components/TrendChart'
+import CategoryPieChart from '../components/CategoryPieChart'
 
 export default function Laporan() {
     const [bulan, setBulan] = useState(
@@ -89,8 +90,11 @@ export default function Laporan() {
                     <p className="text-center text-gray-500">Loading...</p>
                 ) : (
                     <>
-                        {/* Grafik tren 6 bulan */}
-                        <TrendChart data={trend} />
+                        {/* Grafik lingkaran kategori (kiri) + tren 6 bulan (kanan) */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-0">
+                            <CategoryPieChart transaksi={transaksi} tipe="pengeluaran" />
+                            <TrendChart data={trend} />
+                        </div>
 
                         {/* Kartu ringkasan bulanan */}
                         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-6 mb-6">
