@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getUsers, editRoleUser, hapusUser } from '../services/api'
 import Navbar from '../components/Navbar'
-import AdminUsersList from '../components/AdminUsersList'
+import AdminUsersList from '../components/AdminUserList'
 
 export default function AdminUsers() {
     const [users, setUsers] = useState([])
