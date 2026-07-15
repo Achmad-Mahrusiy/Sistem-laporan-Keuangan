@@ -15,7 +15,6 @@ export default function Navbar({ active }) {
     const links = [
         { href: '/dashboard', label: 'Dashboard', key: 'dashboard' },
         { href: '/transaksi', label: 'Transaksi', key: 'transaksi' },
-        { href: '/kategori', label: 'Kategori', key: 'kategori' },
         { href: '/laporan', label: 'Laporan', key: 'laporan' },
         ...(isAdmin ? [{ href: '/users', label: 'Kelola User', key: 'users' }] : []),
     ]

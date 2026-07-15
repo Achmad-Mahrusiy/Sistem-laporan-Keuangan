@@ -3,7 +3,6 @@ import Login from './pages/login'
 import Register from './pages/register'
 import Dashboard from './pages/dashboard'
 import Transaksi from './pages/Transaksi'
-import Kategori from './pages/Kategori'
 import Laporan from './pages/Laporan'
 import AdminUsers from './pages/AdminUsers'
 import useAutoLogout from './hooks/useAutoLogout'
@@ -34,11 +33,6 @@ function App() {
         <Route path="/transaksi" element={
           <PrivateRoute>
             <Transaksi />
-          </PrivateRoute>
-        } />
-        <Route path="/kategori" element={
-          <PrivateRoute>
-            <Kategori />
           </PrivateRoute>
         } />
         <Route path="/laporan" element={
