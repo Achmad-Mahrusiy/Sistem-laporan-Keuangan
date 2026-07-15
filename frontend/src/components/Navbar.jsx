@@ -21,34 +21,60 @@ export default function Navbar({ active }) {
 
     return (
         <>
-            {/* Top bar — tetap tampil di semua ukuran layar, isinya cuma tombol pemicu */}
-            <nav className="bg-ink text-white px-4 sm:px-6 py-3.5 flex items-center gap-3 sticky top-0 z-30">
-                <button
-                    onClick={() => setOpen(true)}
-                    className="p-1.5 -ml-1.5 rounded hover:bg-white/10 transition-colors"
-                    aria-label="Buka menu"
-                >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-                <h1 className="font-display text-lg sm:text-xl font-semibold tracking-tight">
-                    Buku Kas
-                </h1>
+            {/* Top bar — selalu tampil */}
+            <nav className="bg-ink text-white px-4 sm:px-6 py-3.5 flex items-center justify-between sticky top-0 z-30">
+                <div className="flex items-center gap-3">
+                    {/* Tombol hamburger — cuma muncul di bawah breakpoint lg */}
+                    <button
+                        onClick={() => setOpen(true)}
+                        className="lg:hidden p-1.5 -ml-1.5 rounded hover:bg-white/10 transition-colors"
+                        aria-label="Buka menu"
+                    >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <a href="/dashboard" className="font-display text-lg sm:text-xl font-semibold tracking-tight hover:opacity-80 transition-opacity">
+                        Buku Kas
+                    </a>
+                </div>
+
+                {/* Menu horizontal — cuma muncul di layar lg ke atas (laptop/desktop) */}
+                <div className="hidden lg:flex items-center gap-6">
+                    {links.map((l) => (
+                        <a
+                            key={l.key}
+                            href={l.href}
+                            className={`text-sm pb-1 border-b-2 transition-colors ${active === l.key
+                                    ? 'border-forest text-white font-medium'
+                                    : 'border-transparent text-white/60 hover:text-white'
+                                }`}
+                        >
+                            {l.label}
+                        </a>
+                    ))}
+                    <span className="text-sm text-white/50 ml-2">Halo, {user?.username}</span>
+                    <button
+                        onClick={handleLogout}
+                        className="bg-forest text-white px-4 py-1.5 rounded-sm hover:bg-forest-dark font-medium text-sm transition-colors"
+                    >
+                        Logout
+                    </button>
+                </div>
             </nav>
 
-            {/* Lapisan gelap di belakang drawer, klik untuk menutup */}
+            {/* Lapisan gelap di belakang drawer — hanya relevan di bawah lg, karena trigger-nya juga disembunyikan di lg+ */}
             {open && (
                 <div
                     onClick={() => setOpen(false)}
-                    className="fixed inset-0 bg-black/40 z-40"
+                    className="fixed inset-0 bg-black/40 z-40 lg:hidden"
                     aria-hidden="true"
                 />
             )}
 
-            {/* Drawer — panel yang geser masuk dari kiri */}
+            {/* Drawer — panel geser dari kiri, khusus layar di bawah lg */}
             <div
-                className={`fixed inset-y-0 left-0 w-72 max-w-[80%] bg-ink text-white z-50 shadow-xl flex flex-col transition-transform duration-300 ease-in-out ${open ? 'translate-x-0' : '-translate-x-full'
+                className={`fixed inset-y-0 left-0 w-72 max-w-[80%] bg-ink text-white z-50 shadow-xl flex flex-col transition-transform duration-300 ease-in-out lg:hidden ${open ? 'translate-x-0' : '-translate-x-full'
                     }`}
             >
                 <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">

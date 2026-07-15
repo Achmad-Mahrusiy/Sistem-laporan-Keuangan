@@ -177,13 +177,13 @@ export default function Transaksi() {
                                     />
                                 </div>
                                 <div className="sm:col-span-2">
-                                    <label className={labelClass}>Deskripsi</label>
+                                    <label className={labelClass}>Catatan</label>
                                     <input
                                         type="text"
                                         value={form.deskripsi}
                                         onChange={(e) => setForm({ ...form, deskripsi: e.target.value })}
                                         className={inputClass}
-                                        placeholder="Masukkan deskripsi"
+                                        placeholder="Masukkan catatan"
                                     />
                                 </div>
                             </div>
