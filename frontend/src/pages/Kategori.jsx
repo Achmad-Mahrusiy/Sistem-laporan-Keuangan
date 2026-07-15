@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getKategori, tambahKategori, editKategori, hapusKategori } from '../services/api'
 import Navbar from '../components/Navbar'
+import KategoriList from '../components/KategoriList'
 
 export default function Kategori() {
     const [kategori, setKategori] = useState([])
@@ -11,8 +12,6 @@ export default function Kategori() {
         nama: '',
         tipe_category: 'pemasukan'
     })
-
-    // const currentUser = JSON.parse(localStorage.getItem('user'))
 
     useEffect(() => {
         ambilData()
@@ -149,65 +148,8 @@ export default function Kategori() {
                 )}
 
                 {/* Tabel */}
-                <div className="bg-white rounded-sm border border-rule overflow-x-auto">
-                    <table className="w-full min-w-[500px]">
-                        <thead>
-                            <tr className="border-b border-rule">
-                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">No</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Nama</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Tipe</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Sumber</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {kategori.map((k, index) => (
-                                <tr key={k.id_category} className="border-b border-rule last:border-0">
-                                    <td className="px-6 py-3.5 text-sm text-ink/50 font-mono">{index + 1}</td>
-                                    <td className={`px-6 py-3.5 text-sm text-ink border-l-2 ${k.tipe_category === 'pemasukan' ? 'border-forest' : 'border-clay'
-                                        }`}>
-                                        {k.nama}
-                                    </td>
-                                    <td className="px-6 py-3.5 text-sm">
-                                        <span className={`text-xs font-medium uppercase tracking-wide ${k.tipe_category === 'pemasukan' ? 'text-forest' : 'text-clay'
-                                            }`}>
-                                            {k.tipe_category}
-                                        </span>
-                                    </td>
-                                    <td className="px-6 py-3.5 text-sm">
-                                        {k.id_user === null ? (
-                                            <span className="text-xs text-ink/35 italic">Bawaan</span>
-                                        ) : (
-                                            <span className="text-xs text-forest">Milik saya</span>
-                                        )}
-                                    </td>
-                                    <td className="px-6 py-3.5 text-sm text-right whitespace-nowrap">
-                                        {k.id_user !== null ? (
-                                            <>
-                                                <button
-                                                    onClick={() => handleEdit(k)}
-                                                    className="text-ink/60 hover:text-forest mr-3 transition-colors"
-                                                >
-                                                    Edit
-                                                </button>
-                                                <button
-                                                    onClick={() => handleHapus(k.id_category)}
-                                                    className="text-ink/60 hover:text-clay transition-colors"
-                                                >
-                                                    Hapus
-                                                </button>
-                                            </>
-                                        ) : (
-                                            <span className="text-xs text-ink/25">—</span>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    {kategori.length === 0 && (
-                        <p className="text-center text-ink/40 text-sm py-10">Belum ada kategori</p>
-                    )}
+                <div className="bg-white rounded-sm border border-rule">
+                    <KategoriList kategori={kategori} onEdit={handleEdit} onHapus={handleHapus} />
                 </div>
             </div>
         </div>

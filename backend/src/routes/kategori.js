@@ -8,7 +8,7 @@ router.use(authMiddleware)
 router.get('/', async (req, res) => {
     try {
         const result = await pool.query(
-            'SELECT * FROM categories WHERE id_user IS NULL OR id_user = $1 ORDER BY id_category',
+            'SELECT * FROM categories WHERE id_user IS NULL OR id_user = $1 ORDER BY created_at DESC',
             [req.user.id]
         )
         res.json(result.rows)

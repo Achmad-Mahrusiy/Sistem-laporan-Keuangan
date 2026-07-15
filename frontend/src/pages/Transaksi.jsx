@@ -1,15 +1,18 @@
 import { useState, useEffect } from 'react'
-import { getTransaksi, tambahTransaksi, editTransaksi, hapusTransaksi, getKategori } from '../services/api'
+import { getTransaksi, tambahTransaksi, editTransaksi, hapusTransaksi } from '../services/api'
 import Navbar from '../components/Navbar'
+import TransaksiList from '../components/TransaksiList'
+import useBackToDashboard from '../hooks/useBackToDashboard'
 
 export default function Transaksi() {
+    useBackToDashboard()
+
     const [transaksi, setTransaksi] = useState([])
-    const [kategori, setKategori] = useState([])
     const [loading, setLoading] = useState(true)
     const [showForm, setShowForm] = useState(false)
     const [editData, setEditData] = useState(null)
     const [form, setForm] = useState({
-        id_category: '',
+        kategori: '',
         jumlah: '',
         tipe_transaction: 'pemasukan',
         deskripsi: '',
@@ -22,12 +25,8 @@ export default function Transaksi() {
 
     const ambilData = async () => {
         try {
-            const [transaksiRes, kategoriRes] = await Promise.all([
-                getTransaksi(),
-                getKategori()
-            ])
-            setTransaksi(transaksiRes.data)
-            setKategori(kategoriRes.data)
+            const res = await getTransaksi()
+            setTransaksi(res.data)
         } catch (err) {
             console.error(err)
         } finally {
@@ -46,7 +45,7 @@ export default function Transaksi() {
             setShowForm(false)
             setEditData(null)
             setForm({
-                id_category: '',
+                kategori: '',
                 jumlah: '',
                 tipe_transaction: 'pemasukan',
                 deskripsi: '',
@@ -61,7 +60,7 @@ export default function Transaksi() {
     const handleEdit = (t) => {
         setEditData(t)
         setForm({
-            id_category: t.id_category,
+            kategori: t.nama_kategori,
             jumlah: t.jumlah,
             tipe_transaction: t.tipe_transaction,
             deskripsi: t.deskripsi,
@@ -111,7 +110,7 @@ export default function Transaksi() {
                         onClick={() => {
                             setEditData(null)
                             setForm({
-                                id_category: '',
+                                kategori: '',
                                 jumlah: '',
                                 tipe_transaction: 'pemasukan',
                                 deskripsi: '',
@@ -135,19 +134,14 @@ export default function Transaksi() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <div>
                                     <label className={labelClass}>Kategori</label>
-                                    <select
-                                        value={form.id_category}
-                                        onChange={(e) => setForm({ ...form, id_category: e.target.value })}
+                                    <input
+                                        type="text"
+                                        value={form.kategori}
+                                        onChange={(e) => setForm({ ...form, kategori: e.target.value })}
                                         className={inputClass}
+                                        placeholder="Contoh: Makan, Uang Saku"
                                         required
-                                    >
-                                        <option value="">Pilih kategori</option>
-                                        {kategori.map((k) => (
-                                            <option key={k.id_category} value={k.id_category}>
-                                                {k.nama} ({k.tipe_category})
-                                            </option>
-                                        ))}
-                                    </select>
+                                    />
                                 </div>
                                 <div>
                                     <label className={labelClass}>Tipe</label>
@@ -213,54 +207,13 @@ export default function Transaksi() {
                 )}
 
                 {/* Tabel transaksi */}
-                <div className="bg-white rounded-sm border border-rule overflow-x-auto">
-                    <table className="w-full min-w-[760px]">
-                        <thead>
-                            <tr className="border-b border-rule">
-                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Tanggal</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Kategori</th>
-                                <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Deskripsi</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Jumlah</th>
-                                <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Aksi</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {transaksi.map((t) => (
-                                <tr key={t.id_transaction} className="border-b border-rule last:border-0">
-                                    <td className="px-6 py-3.5 text-sm text-ink/70">
-                                        {new Date(t.tanggal).toLocaleDateString('id-ID')}
-                                    </td>
-                                    <td className="px-6 py-3.5 text-sm text-ink/70">{t.nama_kategori}</td>
-                                    <td className={`px-6 py-3.5 text-sm text-ink border-l-2 ${t.tipe_transaction === 'pemasukan' ? 'border-forest' : 'border-clay'
-                                        }`}>
-                                        {t.deskripsi}
-                                    </td>
-                                    <td className={`px-6 py-3.5 text-sm font-mono tabular-nums text-right font-medium ${t.tipe_transaction === 'pemasukan' ? 'text-forest' : 'text-clay'
-                                        }`}>
-                                        {t.tipe_transaction === 'pengeluaran' ? '-' : '+'}
-                                        {formatRupiah(t.jumlah)}
-                                    </td>
-                                    <td className="px-6 py-3.5 text-sm text-right whitespace-nowrap">
-                                        <button
-                                            onClick={() => handleEdit(t)}
-                                            className="text-ink/60 hover:text-forest mr-3 transition-colors"
-                                        >
-                                            Edit
-                                        </button>
-                                        <button
-                                            onClick={() => handleHapus(t.id_transaction)}
-                                            className="text-ink/60 hover:text-clay transition-colors"
-                                        >
-                                            Hapus
-                                        </button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                    {transaksi.length === 0 && (
-                        <p className="text-center text-ink/40 text-sm py-10">Belum ada transaksi</p>
-                    )}
+                <div className="bg-white rounded-sm border border-rule">
+                    <TransaksiList
+                        transaksi={transaksi}
+                        formatRupiah={formatRupiah}
+                        onEdit={handleEdit}
+                        onHapus={handleHapus}
+                    />
                 </div>
             </div>
         </div>

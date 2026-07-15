@@ -77,8 +77,9 @@ export default function Dashboard() {
                     <div className="px-4 sm:px-6 py-4 border-b border-rule">
                         <h3 className="font-display text-lg font-semibold text-ink">Riwayat Transaksi</h3>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full min-w-[640px]">
+                    {/* Tampilan tabel - desktop / tablet */}
+                    <div className="hidden sm:block">
+                        <table className="w-full">
                             <thead>
                                 <tr className="border-b border-rule">
                                     <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Tanggal</th>
@@ -107,6 +108,33 @@ export default function Dashboard() {
                                 ))}
                             </tbody>
                         </table>
+                    </div>
+
+                    {/* Tampilan kartu - mobile, tanpa scroll horizontal */}
+                    <div className="sm:hidden divide-y divide-rule">
+                        {transaksi.map((t) => (
+                            <div key={t.id_transaction} className="p-4">
+                                <div className="flex justify-between items-start gap-3">
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-medium text-ink truncate">{t.nama_kategori}</p>
+                                        <p className="text-xs text-ink/50 mt-0.5">
+                                            {new Date(t.tanggal).toLocaleDateString('id-ID')}
+                                        </p>
+                                    </div>
+                                    <p className={`font-mono tabular-nums text-sm font-semibold whitespace-nowrap ${t.tipe_transaction === 'pemasukan' ? 'text-forest' : 'text-clay'
+                                        }`}>
+                                        {t.tipe_transaction === 'pengeluaran' ? '-' : '+'}
+                                        {formatRupiah(t.jumlah)}
+                                    </p>
+                                </div>
+                                {t.deskripsi && (
+                                    <p className={`text-sm text-ink/70 mt-2 pl-2.5 border-l-2 ${t.tipe_transaction === 'pemasukan' ? 'border-forest' : 'border-clay'
+                                        }`}>
+                                        {t.deskripsi}
+                                    </p>
+                                )}
+                            </div>
+                        ))}
                     </div>
 
                     {transaksi.length === 0 && (
