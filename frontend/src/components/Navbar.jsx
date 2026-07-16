@@ -27,7 +27,7 @@ export default function Navbar({ active }) {
                     {/* Tombol hamburger — cuma muncul di bawah breakpoint lg */}
                     <button
                         onClick={() => setOpen(true)}
-                        className="lg:hidden p-1.5 -ml-1.5 rounded hover:bg-white/10 transition-colors"
+                        className="lg:hidden p-1.5 -ml-1.5 rounded hover:bg-white/10 hover:scale-105 active:scale-95 transition-all duration-150"
                         aria-label="Buka menu"
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,7 @@ export default function Navbar({ active }) {
                     <span className="text-sm text-white/50 ml-2">Halo, {user?.username}</span>
                     <button
                         onClick={handleLogout}
-                        className="bg-forest text-white px-4 py-1.5 rounded-sm hover:bg-forest-dark font-medium text-sm transition-colors"
+                        className="bg-forest text-white px-4 py-1.5 rounded-sm hover:bg-forest-dark hover:-translate-y-0.5 active:translate-y-0 font-medium text-sm transition-all duration-200"
                     >
                         Logout
                     </button>

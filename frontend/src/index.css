@@ -11,3 +11,29 @@ body {
 .tabular-nums {
     font-variant-numeric: tabular-nums;
 }
+
+/* Untuk pengguna yang aktifkan "Reduce Motion" di HP/laptopnya —
+   biasanya karena sensitif motion atau ingin hemat baterai.
+   Semua animasi kita matikan sepenuhnya, transisi tetap instan. */
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+/* Margin rapi untuk hasil Export PDF / cetak laporan */
+@media print {
+    @page {
+        margin: 1.5cm;
+    }
+
+    body {
+        background: white !important;
+    }
+}

@@ -10,7 +10,7 @@ export default function TransaksiList({ transaksi, formatRupiah, onEdit, onHapus
             {/* Tampilan HP — kartu bertumpuk, TIDAK PERNAH perlu digeser ke samping */}
             <div className="sm:hidden divide-y divide-rule">
                 {transaksi.map((t) => (
-                    <div key={t.id_transaction} className="p-4">
+                    <div key={t.id_transaction} className="p-4 transition-colors hover:bg-paper/60">
                         <div className="flex justify-between items-start gap-3 mb-1.5">
                             <div>
                                 <p className="text-sm text-ink font-medium">{t.nama_kategori}</p>
@@ -61,7 +61,7 @@ export default function TransaksiList({ transaksi, formatRupiah, onEdit, onHapus
                     </thead>
                     <tbody>
                         {transaksi.map((t) => (
-                            <tr key={t.id_transaction} className="border-b border-rule last:border-0">
+                            <tr key={t.id_transaction} className="border-b border-rule last:border-0 transition-colors hover:bg-paper/60">
                                 <td className="px-6 py-3.5 text-sm text-ink/70 whitespace-nowrap">
                                     {new Date(t.tanggal).toLocaleDateString('id-ID')}
                                 </td>

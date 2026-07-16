@@ -11,6 +11,8 @@ export default function Transaksi() {
     const [loading, setLoading] = useState(true)
     const [showForm, setShowForm] = useState(false)
     const [editData, setEditData] = useState(null)
+    const [filterTipe, setFilterTipe] = useState('semua')
+    const [filterBulan, setFilterBulan] = useState('')
     const [form, setForm] = useState({
         kategori: '',
         jumlah: '',
@@ -86,6 +88,21 @@ export default function Transaksi() {
         }).format(angka)
     }
 
+    // Terapkan filter tipe & bulan ke data transaksi.
+    // Tidak perlu request baru ke backend — cukup saring array yang sudah ada.
+    const transaksiTerfilter = transaksi.filter((t) => {
+        const cocokTipe = filterTipe === 'semua' || t.tipe_transaction === filterTipe
+        const cocokBulan = filterBulan === '' || t.tanggal.slice(0, 7) === filterBulan
+        return cocokTipe && cocokBulan
+    })
+
+    const adaFilterAktif = filterTipe !== 'semua' || filterBulan !== ''
+
+    const resetFilter = () => {
+        setFilterTipe('semua')
+        setFilterBulan('')
+    }
+
     if (loading) return (
         <div className="min-h-screen bg-paper flex items-center justify-center">
             <p className="text-ink/40 text-sm">Memuat...</p>
@@ -99,7 +116,7 @@ export default function Transaksi() {
         <div className="min-h-screen bg-paper">
             <Navbar active="transaksi" />
 
-            <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+            <div className="p-4 sm:p-6 max-w-6xl mx-auto animate-fade-in-up">
                 {/* Header */}
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 mb-6">
                     <div>
@@ -118,15 +135,48 @@ export default function Transaksi() {
                             })
                             setShowForm(true)
                         }}
-                        className="bg-forest text-white px-4 py-2 rounded-sm hover:bg-forest-dark font-medium w-full sm:w-auto transition-colors"
+                        className="bg-forest text-white px-4 py-2 rounded-sm hover:bg-forest-dark hover:-translate-y-0.5 active:translate-y-0 font-medium w-full sm:w-auto transition-all duration-200"
                     >
                         + Tambah Transaksi
                     </button>
                 </div>
 
+                {/* Filter tipe & bulan */}
+                <div className="bg-white rounded-sm border border-rule p-3 sm:p-4 mb-6 flex flex-col sm:flex-row sm:items-end gap-3">
+                    <div className="flex-1">
+                        <label className={labelClass}>Tipe</label>
+                        <select
+                            value={filterTipe}
+                            onChange={(e) => setFilterTipe(e.target.value)}
+                            className={inputClass}
+                        >
+                            <option value="semua">Semua</option>
+                            <option value="pemasukan">Pemasukan</option>
+                            <option value="pengeluaran">Pengeluaran</option>
+                        </select>
+                    </div>
+                    <div className="flex-1">
+                        <label className={labelClass}>Bulan</label>
+                        <input
+                            type="month"
+                            value={filterBulan}
+                            onChange={(e) => setFilterBulan(e.target.value)}
+                            className={inputClass}
+                        />
+                    </div>
+                    {adaFilterAktif && (
+                        <button
+                            onClick={resetFilter}
+                            className="text-sm text-ink/50 hover:text-clay underline underline-offset-2 transition-colors sm:pb-2.5 whitespace-nowrap"
+                        >
+                            Reset filter
+                        </button>
+                    )}
+                </div>
+
                 {/* Form tambah/edit */}
                 {showForm && (
-                    <div className="bg-white rounded-sm border border-rule p-4 sm:p-6 mb-6">
+                    <div className="bg-white rounded-sm border border-rule p-4 sm:p-6 mb-6 animate-scale-in origin-top">
                         <h3 className="font-display text-lg font-semibold text-ink mb-4">
                             {editData ? 'Edit Transaksi' : 'Tambah Transaksi'}
                         </h3>
@@ -209,7 +259,7 @@ export default function Transaksi() {
                 {/* Tabel transaksi */}
                 <div className="bg-white rounded-sm border border-rule">
                     <TransaksiList
-                        transaksi={transaksi}
+                        transaksi={transaksiTerfilter}
                         formatRupiah={formatRupiah}
                         onEdit={handleEdit}
                         onHapus={handleHapus}

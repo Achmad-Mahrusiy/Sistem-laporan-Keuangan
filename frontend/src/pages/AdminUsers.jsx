@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getUsers, editRoleUser, hapusUser } from '../services/api'
 import Navbar from '../components/Navbar'
-import AdminUsersList from '../components/AdminUserList'
+import AdminUsersList from '../components/AdminUsersList'
 
 export default function AdminUsers() {
     const [users, setUsers] = useState([])
@@ -52,7 +52,7 @@ export default function AdminUsers() {
         <div className="min-h-screen bg-paper">
             <Navbar active="users" />
 
-            <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+            <div className="p-4 sm:p-6 max-w-6xl mx-auto animate-fade-in-up">
                 {/* Header */}
                 <div className="mb-6">
                     <p className="text-xs tracking-[0.2em] uppercase text-forest font-semibold mb-1">Admin</p>

@@ -42,13 +42,13 @@ export default function Login() {
                 }} />
             </div>
 
-            <div className="relative w-full max-w-md">
+            <div className="relative w-full max-w-md animate-fade-in-up">
                 {/* Label eyebrow */}
                 <p className="text-center text-xs sm:text-sm tracking-[0.2em] uppercase text-forest font-semibold mb-3">
                     Buku Kas Digital
                 </p>
 
-                <div className="bg-white rounded-sm shadow-[0_1px_2px_rgba(27,37,33,0.06),0_8px_24px_rgba(27,37,33,0.08)] border border-rule px-6 sm:px-10 py-8 sm:py-10">
+                <div className="bg-white rounded-sm shadow-[0_2px_4px_rgba(27,37,33,0.06),0_16px_40px_-8px_rgba(27,37,33,0.16)] border border-rule px-6 sm:px-10 py-8 sm:py-10">
                     <h1 className="font-display text-3xl sm:text-4xl font-semibold text-ink text-center mb-1 leading-tight">
                         Sistem Laporan<br />Keuangan
                     </h1>
@@ -99,7 +99,7 @@ export default function Login() {
                         <button
                             type="submit"
                             disabled={loading}
-                            className="w-full bg-forest text-white py-2.5 rounded-sm hover:bg-forest-dark font-medium transition-colors disabled:opacity-50"
+                            className="w-full bg-forest text-white py-2.5 rounded-sm hover:bg-forest-dark hover:-translate-y-0.5 active:translate-y-0 font-medium transition-all duration-200 disabled:opacity-50 disabled:hover:translate-y-0"
                         >
                             {loading ? 'Memproses...' : 'Masuk'}
                         </button>
