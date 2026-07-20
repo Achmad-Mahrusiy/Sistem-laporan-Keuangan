@@ -105,7 +105,7 @@ export default function Transaksi() {
 
     if (loading) return (
         <div className="min-h-screen bg-paper flex items-center justify-center">
-            <p className="text-ink/40 text-sm">Memuat...</p>
+            <p className="text-ink/60 text-sm">Memuat...</p>
         </div>
     )
 

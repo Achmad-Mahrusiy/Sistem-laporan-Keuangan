@@ -1,6 +1,6 @@
 export default function AdminUsersList({ users, currentUserId, onUbahRole, onHapus }) {
     if (users.length === 0) {
-        return <p className="text-center text-ink/40 text-sm py-10">Belum ada pengguna</p>
+        return <p className="text-center text-ink/60 text-sm py-10">Belum ada pengguna</p>
     }
 
     const renderStatus = (u) => {
@@ -15,7 +15,7 @@ export default function AdminUsersList({ users, currentUserId, onUbahRole, onHap
 
     const renderAksi = (u) => {
         if (u.id_user === currentUserId) {
-            return <span className="text-xs text-ink/35 italic">Akun kamu</span>
+            return <span className="text-xs text-ink/55 italic">Akun kamu</span>
         }
         return (
             <>
@@ -62,11 +62,11 @@ export default function AdminUsersList({ users, currentUserId, onUbahRole, onHap
                 <table className="w-full">
                     <thead>
                         <tr className="border-b border-rule">
-                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Username</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Email</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Role</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Status</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Aksi</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/60 uppercase tracking-wide">Username</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/60 uppercase tracking-wide">Email</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/60 uppercase tracking-wide">Role</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/60 uppercase tracking-wide">Status</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-ink/60 uppercase tracking-wide">Aksi</th>
                         </tr>
                     </thead>
                     <tbody>

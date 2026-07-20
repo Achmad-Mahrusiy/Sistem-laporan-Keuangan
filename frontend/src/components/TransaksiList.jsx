@@ -1,6 +1,6 @@
 export default function TransaksiList({ transaksi, formatRupiah, onEdit, onHapus }) {
     if (transaksi.length === 0) {
-        return <p className="text-center text-ink/40 text-sm py-10">Belum ada transaksi</p>
+        return <p className="text-center text-ink/60 text-sm py-10">Belum ada transaksi</p>
     }
 
     const adaAksi = Boolean(onEdit || onHapus)
@@ -50,12 +50,12 @@ export default function TransaksiList({ transaksi, formatRupiah, onEdit, onHapus
                 <table className="w-full">
                     <thead>
                         <tr className="border-b border-rule">
-                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Tanggal</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Kategori</th>
-                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/40 uppercase tracking-wide">Catatan</th>
-                            <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Jumlah</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/60 uppercase tracking-wide">Tanggal</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/60 uppercase tracking-wide">Kategori</th>
+                            <th className="px-6 py-3 text-left text-xs font-medium text-ink/60 uppercase tracking-wide">Catatan</th>
+                            <th className="px-6 py-3 text-right text-xs font-medium text-ink/60 uppercase tracking-wide">Jumlah</th>
                             {adaAksi && (
-                                <th className="px-6 py-3 text-right text-xs font-medium text-ink/40 uppercase tracking-wide">Aksi</th>
+                                <th className="px-6 py-3 text-right text-xs font-medium text-ink/60 uppercase tracking-wide">Aksi</th>
                             )}
                         </tr>
                     </thead>

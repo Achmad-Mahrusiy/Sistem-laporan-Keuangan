@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { getLaporanBulanan, getTransaksi } from '../services/api'
 import Navbar from '../components/Navbar'
 import TrendChart from '../components/TrendChart'
-import CategoryPieChart from '../components/CategoryPieChart'
+import CategoryPieChart from '../components/Categorypiechart'
 import TransaksiList from '../components/TransaksiList'
 
 export default function Laporan() {
