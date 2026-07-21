@@ -1,13 +1,4 @@
-const WARNA_PALET = [
-    '#0F6B4C', // forest
-    '#A6472B', // clay
-    '#3B6EA5', // biru
-    '#B58A2E', // kuning tanah
-    '#6C4F9C', // ungu
-    '#2E8E8E', // teal
-    '#A5473B', // merah bata
-    '#5C7A2E', // hijau lumut
-]
+import { ringkasKategoriTeratas } from '../utils/chartColors'
 
 export default function CategoryPieChart({ transaksi, tipe = 'pengeluaran' }) {
     // Kelompokkan transaksi berdasarkan nama kategori, jumlahkan nilainya
@@ -19,11 +10,9 @@ export default function CategoryPieChart({ transaksi, tipe = 'pengeluaran' }) {
             dataPerKategori[nama] = (dataPerKategori[nama] || 0) + Number(t.jumlah)
         })
 
-    const data = Object.entries(dataPerKategori)
-        .map(([label, value]) => ({ label, value }))
-        .sort((a, b) => b.value - a.value)
+    const data = ringkasKategoriTeratas(dataPerKategori)
 
-    const total = data.reduce((acc, d) => acc + d.value, 0)
+    const total = data.reduce((acc, d) => acc + d.nilai, 0)
 
     const formatRupiah = (angka) =>
         new Intl.NumberFormat('id-ID', {
@@ -41,7 +30,7 @@ export default function CategoryPieChart({ transaksi, tipe = 'pengeluaran' }) {
     // supaya logika perhitungan terpisah dari tampilan
     let offsetKumulatif = 0
     const dataDenganBusur = data.map((d) => {
-        const panjangBusur = (d.value / total) * circumference
+        const panjangBusur = (d.nilai / total) * circumference
         const busur = { ...d, panjangBusur, offset: offsetKumulatif }
         offsetKumulatif += panjangBusur
         return busur
@@ -62,14 +51,14 @@ export default function CategoryPieChart({ transaksi, tipe = 'pengeluaran' }) {
                     {/* Lingkaran donat — diputar -90deg supaya mulai dari jam 12 */}
                     <svg width="160" height="160" viewBox="0 0 160 160" className="flex-shrink-0 -rotate-90">
                         <circle cx="80" cy="80" r={radius} fill="none" stroke="#F0F0EC" strokeWidth={strokeWidth} />
-                        {dataDenganBusur.map((d, i) => (
+                        {dataDenganBusur.map((d) => (
                             <circle
-                                key={d.label}
+                                key={d.nama}
                                 cx="80"
                                 cy="80"
                                 r={radius}
                                 fill="none"
-                                stroke={WARNA_PALET[i % WARNA_PALET.length]}
+                                stroke={d.warna}
                                 strokeWidth={strokeWidth}
                                 strokeDasharray={`${d.panjangBusur} ${circumference}`}
                                 strokeDashoffset={-d.offset}
@@ -79,19 +68,19 @@ export default function CategoryPieChart({ transaksi, tipe = 'pengeluaran' }) {
 
                     {/* Legenda daftar kategori */}
                     <div className="flex-1 w-full space-y-2">
-                        {dataDenganBusur.map((d, i) => (
-                            <div key={d.label} className="flex items-center justify-between text-sm">
+                        {dataDenganBusur.map((d) => (
+                            <div key={d.nama} className="flex items-center justify-between text-sm">
                                 <div className="flex items-center gap-2">
                                     <span
                                         className="w-3 h-3 rounded-sm inline-block flex-shrink-0"
-                                        style={{ backgroundColor: WARNA_PALET[i % WARNA_PALET.length] }}
+                                        style={{ backgroundColor: d.warna }}
                                     />
-                                    <span className="text-gray-700">{d.label}</span>
+                                    <span className="text-gray-700">{d.nama}</span>
                                 </div>
                                 <div className="text-right whitespace-nowrap">
-                                    <span className="text-gray-800 font-medium">{formatRupiah(d.value)}</span>
+                                    <span className="text-gray-800 font-medium">{formatRupiah(d.nilai)}</span>
                                     <span className="text-gray-400 ml-2 text-xs">
-                                        {((d.value / total) * 100).toFixed(0)}%
+                                        {((d.nilai / total) * 100).toFixed(0)}%
                                     </span>
                                 </div>
                             </div>

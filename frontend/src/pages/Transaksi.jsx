@@ -13,6 +13,7 @@ export default function Transaksi() {
     const [editData, setEditData] = useState(null)
     const [filterTipe, setFilterTipe] = useState('semua')
     const [filterBulan, setFilterBulan] = useState('')
+    const [filterKategori, setFilterKategori] = useState('semua')
     const [form, setForm] = useState({
         kategori: '',
         jumlah: '',
@@ -88,19 +89,27 @@ export default function Transaksi() {
         }).format(angka)
     }
 
-    // Terapkan filter tipe & bulan ke data transaksi.
+    // Terapkan filter tipe, bulan, & kategori ke data transaksi.
     // Tidak perlu request baru ke backend — cukup saring array yang sudah ada.
     const transaksiTerfilter = transaksi.filter((t) => {
         const cocokTipe = filterTipe === 'semua' || t.tipe_transaction === filterTipe
         const cocokBulan = filterBulan === '' || t.tanggal.slice(0, 7) === filterBulan
-        return cocokTipe && cocokBulan
+        const cocokKategori = filterKategori === 'semua' || t.nama_kategori === filterKategori
+        return cocokTipe && cocokBulan && cocokKategori
     })
 
-    const adaFilterAktif = filterTipe !== 'semua' || filterBulan !== ''
+    // Daftar kategori unik yang benar-benar pernah dipakai user,
+    // diambil langsung dari data transaksi (bukan tabel kategori terpisah — sudah tidak ada lagi)
+    const daftarKategori = [...new Set(transaksi.map((t) => t.nama_kategori))].sort((a, b) =>
+        a.localeCompare(b)
+    )
+
+    const adaFilterAktif = filterTipe !== 'semua' || filterBulan !== '' || filterKategori !== 'semua'
 
     const resetFilter = () => {
         setFilterTipe('semua')
         setFilterBulan('')
+        setFilterKategori('semua')
     }
 
     if (loading) return (
@@ -141,7 +150,7 @@ export default function Transaksi() {
                     </button>
                 </div>
 
-                {/* Filter tipe & bulan */}
+                {/* Filter tipe, kategori, & bulan */}
                 <div className="bg-white rounded-sm border border-rule p-3 sm:p-4 mb-6 flex flex-col sm:flex-row sm:items-end gap-3">
                     <div className="flex-1">
                         <label className={labelClass}>Tipe</label>
@@ -153,6 +162,19 @@ export default function Transaksi() {
                             <option value="semua">Semua</option>
                             <option value="pemasukan">Pemasukan</option>
                             <option value="pengeluaran">Pengeluaran</option>
+                        </select>
+                    </div>
+                    <div className="flex-1">
+                        <label className={labelClass}>Kategori</label>
+                        <select
+                            value={filterKategori}
+                            onChange={(e) => setFilterKategori(e.target.value)}
+                            className={inputClass}
+                        >
+                            <option value="semua">Semua</option>
+                            {daftarKategori.map((k) => (
+                                <option key={k} value={k}>{k}</option>
+                            ))}
                         </select>
                     </div>
                     <div className="flex-1">

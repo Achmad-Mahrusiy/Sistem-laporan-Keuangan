@@ -2,7 +2,7 @@ import { useState, useEffect, useCallback } from 'react'
 import { getLaporanBulanan, getTransaksi } from '../services/api'
 import Navbar from '../components/Navbar'
 import TrendChart from '../components/TrendChart'
-import CategoryPieChart from '../components/Categorypiechart'
+import CategoryPieChart from '../components/CategoryPieChart'
 import TransaksiList from '../components/TransaksiList'
 
 export default function Laporan() {
@@ -32,24 +32,48 @@ export default function Laporan() {
         try {
             const rentangBulan = generateRentangBulan(bulan, 6)
 
-            const [laporanRes, transaksiRes, ...trendRes] = await Promise.all([
+            const [laporanRes, transaksiRes] = await Promise.all([
                 getLaporanBulanan(bulan),
-                getTransaksi(),
-                ...rentangBulan.map((b) => getLaporanBulanan(b))
+                getTransaksi()
             ])
 
             setLaporan(laporanRes.data)
 
-            const filtered = transaksiRes.data.filter(t =>
+            const semuaTransaksi = transaksiRes.data
+
+            const filtered = semuaTransaksi.filter(t =>
                 t.tanggal.slice(0, 7) === bulan
             )
             setTransaksi(filtered)
 
-            const dataTrend = rentangBulan.map((b, i) => ({
-                bulan: b,
-                pemasukan: Number(trendRes[i].data.total_pemasukan) || 0,
-                pengeluaran: Number(trendRes[i].data.total_pengeluaran) || 0,
-            }))
+            // Bangun data tren 6 bulan LANGSUNG dari data transaksi yang sudah kita punya —
+            // tidak perlu 6x request tambahan ke backend seperti sebelumnya.
+            // Sekalian hitung breakdown per kategori, supaya grafiknya bisa di-stack.
+            const dataTrend = rentangBulan.map((b) => {
+                const transaksiBulanIni = semuaTransaksi.filter(t => t.tanggal.slice(0, 7) === b)
+
+                const kelompokkanPerKategori = (tipe) => {
+                    const hasil = {}
+                    transaksiBulanIni
+                        .filter(t => t.tipe_transaction === tipe)
+                        .forEach(t => {
+                            const nama = t.nama_kategori || 'Lainnya'
+                            hasil[nama] = (hasil[nama] || 0) + Number(t.jumlah)
+                        })
+                    return hasil
+                }
+
+                const kategoriPemasukan = kelompokkanPerKategori('pemasukan')
+                const kategoriPengeluaran = kelompokkanPerKategori('pengeluaran')
+
+                return {
+                    bulan: b,
+                    pemasukan: Object.values(kategoriPemasukan).reduce((a, v) => a + v, 0),
+                    pengeluaran: Object.values(kategoriPengeluaran).reduce((a, v) => a + v, 0),
+                    kategoriPemasukan,
+                    kategoriPengeluaran,
+                }
+            })
             setTrend(dataTrend)
         } catch (err) {
             console.error(err)
